@@ -17,9 +17,9 @@ html {
 }
 
 marquee {
-	color: green;
-	font-size: 24px;
-	text-shadow: #716f6f 4px 2px 1px;
+	color: #4de83c;
+    font-size: 24px;
+    text-shadow: #a92727 4px 2px 1px;
 }
 
 body {
@@ -28,8 +28,11 @@ body {
 }
 
 .cta {
-	margin-top: 50vh;
-	text-align: center;
+	width: 50%;
+    margin: 40vh auto 0 auto;
+    background: white;
+    border-radius: 22px;
+    box-shadow: #777676 1px 6px 8px;
 }
 
 .cta a {
