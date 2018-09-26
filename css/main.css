@@ -33,6 +33,8 @@ body {
     background: white;
     border-radius: 22px;
     box-shadow: #777676 1px 6px 8px;
+    padding: 0 1.5rem;
+    text-align: center;
 }
 
 .cta a {
@@ -41,6 +43,7 @@ body {
 
 .old-logos {
     margin: 0 auto;
+    width: 50%;
 }
 
 .main_container {
