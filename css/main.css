@@ -23,6 +23,8 @@ marquee {
 }
 
 body {
+    background-image: url('/img/bricks.jpeg');
+    background-repeat: repeat;
 }
 
 .cta {
