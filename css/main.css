@@ -36,6 +36,10 @@ body {
 	font-weight: bold;
 }
 
+.old-logos {
+    margin: 0 auto;
+}
+
 .main_container {
     height: 46px;
     width: auto;
