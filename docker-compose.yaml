@@ -1,5 +1,4 @@
 version: '2'
-  fathom:
 services:
   nginx-proxy:
     image: jwilder/nginx-proxy:alpine
@@ -29,9 +28,9 @@ services:
       - MYSQL_ROOT_PASSWORD=ins,ikl9!
     volumes:
       - ./mysql:/var/lib/mysql
-  redbrickone_com:
-    container_name: redbrickone_com
-    image: registry.codekoalas.com/chris/redbrickone.com:master
+  redbrickone:
+    container_name: redbrickone
+    image: registry.codekoalas.com/chris/redbrickone:master
     environment:
       VIRTUAL_HOST: redbrickone.com
       DATABASE_HOST: mysql
@@ -44,6 +43,6 @@ services:
       LETSENCRYPT_HOST: redbrickone.com
       LETSENCRYPT_EMAIL: domains@codekoalas.com
     volumes:
-      - /data/redbrickone_com/public:/var/www/html/docroot/sites/default/files
-      - /data/redbrickone_com/private:/var/www/html/private
+      - /data/redbrickone/public:/var/www/html/docroot/sites/default/files
+      - /data/redbrickone/private:/var/www/html/private
     restart: always
