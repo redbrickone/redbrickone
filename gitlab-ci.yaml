@@ -1,0 +1,30 @@
+variables:
+  IMAGE_TAG_RELEASE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+stages:
+  - deploy
+build-dev:
+  image: docker:latest
+  services:
+    - docker:18-dind
+  stage: deploy
+  only:
+    - master
+  script:
+    - docker run -v $PWD:/var/www/html donniewest/drupal-node-container:latest /bin/bash -c "composer install"
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $IMAGE_TAG_RELEASE ./
+    - docker push $IMAGE_TAG_RELEASE
+build-production:
+  image: docker:latest
+  services:
+    - docker:18-dind
+  stage: deploy
+  only:
+    - /^RELEASE-[\.\d]*/
+  except:
+    - branches
+  script:
+    - docker run -v $PWD:/var/www/html donniewest/drupal-node-container:latest /bin/bash -c "composer install"
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:production ./
+    - docker push $CI_REGISTRY_IMAGE:master
