@@ -1,0 +1,49 @@
+version: '2'
+  fathom:
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /data/certs:/etc/nginx/certs:ro
+      - /data/vhosts:/etc/nginx/vhost.d
+      - /data/html:/usr/share/nginx/html
+      - ./nginx-proxy/nginx.tmpl:/app/nginx.tmpl
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/certs:/etc/nginx/certs:rw
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=ins,ikl9!
+    volumes:
+      - ./mysql:/var/lib/mysql
+  redbrickone_com:
+    container_name: redbrickone_com
+    image: registry.codekoalas.com/chris/redbrickone.com:master
+    environment:
+      VIRTUAL_HOST: redbrickone.com
+      DATABASE_HOST: mysql
+      DATABASE_NAME: default
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: user
+      DRUPAL_HTTPS: "on"
+      DRUPAL_BASE_URL: "https://redbrickone.com"
+      APACHE_DOCROOT: /var/www/redbrickone/docroot
+      LETSENCRYPT_HOST: redbrickone.com
+      LETSENCRYPT_EMAIL: domains@codekoalas.com
+    volumes:
+      - /data/redbrickone_com/public:/var/www/html/docroot/sites/default/files
+      - /data/redbrickone_com/private:/var/www/html/private
+    restart: always
